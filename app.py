@@ -54,13 +54,8 @@ def message_text(event):
             #video.close()
             #audio.close()
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
+            os.system(f'ffmpeg -i static/{video_id}.mp4 -vn -c:a copy static/{video_id}.m4a')
             try:
-                os.system(f'ffmpeg -i static/{video_id}.mp4 -vn -c:a copy static/{video_id}.m4a')
-            except:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text='抱歉我恍神了再一次。。。'))
-            else:
                 line_bot_api.reply_message(
                     event.reply_token,[
                     VideoSendMessage(
@@ -69,8 +64,12 @@ def message_text(event):
                     AudioSendMessage(
                         original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{video_id}.m4a',
                         duration=YouTube(url).length * 1000),
-                    TextSendMessage(text='蟲洞關閉中快下載。。。')])
+                    TextSendMessage(text='還不手刀下載。。。')])
                 break
+            except:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='抱歉再試一次。。。'))
     else:
         line_bot_api.reply_message(
             event.reply_token,
