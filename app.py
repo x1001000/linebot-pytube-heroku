@@ -2,7 +2,7 @@ import os, sys, re
 from flask import Flask, request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, AudioSendMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, AudioSendMessage, VideoSendMessage
 from pytube import YouTube
 from moviepy.editor import *
 
@@ -55,10 +55,13 @@ def message_text(event):
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
             os.system('ffmpeg -i static/YTDL.mp4 -vn -c:a copy static/LINE.m4a')
             line_bot_api.reply_message(
-                event.reply_token,
+                event.reply_token,[
+                VideoSendMessage(
+                    original_content_url='https://youtube-dl-linebot.herokuapp.com/static/YTDL.mp4',
+                    preview_image_url=YouTube(url).thumbnail_url),
                 AudioSendMessage(
                     original_content_url='https://youtube-dl-linebot.herokuapp.com/static/LINE.m4a',
-                    duration=int(YouTube(url).length) * 1000))
+                    duration=YouTube(url).length * 1000)])
             break
     else:
         line_bot_api.reply_message(
