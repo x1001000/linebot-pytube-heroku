@@ -47,7 +47,7 @@ def message_text(event):
         if match:
             url = match.group(0)
             video_id = extract.video_id(url)
-            print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
+            print(YouTube(url).streams.get_by_resolution('720p').download(output_path='static',filename=video_id))
             #video = VideoFileClip('static/YTDL.mp4')
             #audio = video.audio
             #audio.write_audiofile('static/LINE.mp3')
