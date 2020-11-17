@@ -57,7 +57,7 @@ def message_text(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 AudioSendMessage(
-                    original_content_url='https://youtube-dl-linebot.herokuapp.com/static/LINE.m4a'
+                    original_content_url='https://youtube-dl-linebot.herokuapp.com/static/LINE.m4a',
                     duration=int(YouTube(url).length)))
             break
     else:
