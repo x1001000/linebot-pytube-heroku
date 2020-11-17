@@ -3,7 +3,7 @@ from flask import Flask, request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, AudioSendMessage, VideoSendMessage
-from pytube import YouTube
+from pytube import YouTube, extract
 from moviepy.editor import *
 
 app = Flask(__name__)
@@ -46,22 +46,22 @@ def message_text(event):
         match = re.search('.*youtu.*', first)
         if match:
             url = match.group(0)
-            title = YouTube(url).title
-            print(YouTube(url).streams.first().download(output_path='static',filename=title))
+            video_id = extract.video_id(url)
+            print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
             #video = VideoFileClip('static/YTDL.mp4')
             #audio = video.audio
             #audio.write_audiofile('static/LINE.mp3')
             #video.close()
             #audio.close()
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
-            os.system(f'ffmpeg -i static/{title}.mp4 -vn -c:a copy static/{title}.m4a')
+            os.system(f'ffmpeg -i static/{video_id}.mp4 -vn -c:a copy static/{video_id}.m4a')
             line_bot_api.reply_message(
                 event.reply_token,[
                 VideoSendMessage(
-                    original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{title}.mp4',
+                    original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{video_id}.mp4',
                     preview_image_url=YouTube(url).thumbnail_url),
                 AudioSendMessage(
-                    original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{title}.m4a',
+                    original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{video_id}.m4a',
                     duration=YouTube(url).length * 1000)])
             break
     else:
