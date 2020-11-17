@@ -42,25 +42,26 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
-    for line in event.message.text.split():
-        match = re.search('.*youtu.*', line)
+    for first in event.message.text.split():
+        match = re.search('.*youtu.*', first)
         if match:
             url = match.group(0)
-            print(YouTube(url).streams.first().download(output_path='static',filename='YTDL'))
+            title = YouTube(url).title
+            print(YouTube(url).streams.first().download(output_path='static',filename=title))
             #video = VideoFileClip('static/YTDL.mp4')
             #audio = video.audio
             #audio.write_audiofile('static/LINE.mp3')
             #video.close()
             #audio.close()
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
-            os.system('ffmpeg -i static/YTDL.mp4 -vn -c:a copy static/LINE.m4a')
+            os.system(f'ffmpeg -i static/{title}.mp4 -vn -c:a copy static/{title}.m4a')
             line_bot_api.reply_message(
                 event.reply_token,[
                 VideoSendMessage(
-                    original_content_url='https://youtube-dl-linebot.herokuapp.com/static/YTDL.mp4',
+                    original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{title}.mp4',
                     preview_image_url=YouTube(url).thumbnail_url),
                 AudioSendMessage(
-                    original_content_url='https://youtube-dl-linebot.herokuapp.com/static/LINE.m4a',
+                    original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{title}.m4a',
                     duration=YouTube(url).length * 1000)])
             break
     else:
