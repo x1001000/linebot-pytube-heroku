@@ -51,13 +51,14 @@ def message_text(event):
             audio.write_audiofile('static/LINE.mp3')
             video.close()
             audio.close()
-            TextSendMessage(text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3')
+            text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
             break
     else:    
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text='說好的YouTube呢？')
-        )
+        text = '說好的YouTube呢？'
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=text)
+    )
 
 
 if __name__ == "__main__":
