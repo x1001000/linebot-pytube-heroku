@@ -2,7 +2,7 @@ import os, sys, re
 from flask import Flask, request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, AudioSendMessage
 from pytube import YouTube
 from moviepy.editor import *
 
@@ -45,7 +45,8 @@ def message_text(event):
     for line in event.message.text.split():
         match = re.search('.*youtu.*', line)
         if match:
-            print(YouTube(match.group(0)).streams.first().download(output_path='static',filename='YTDL'))
+            url = match.group(0)
+            print(YouTube(url).streams.first().download(output_path='static',filename='YTDL'))
             #video = VideoFileClip('static/YTDL.mp4')
             #audio = video.audio
             #audio.write_audiofile('static/LINE.mp3')
@@ -53,13 +54,16 @@ def message_text(event):
             #audio.close()
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
             os.system('ffmpeg -i static/YTDL.mp4 -vn -c:a copy static/LINE.m4a')
+            line_bot_api.reply_message(
+                event.reply_token,
+                AudioSendMessage(
+                    original_content_url='https://youtube-dl-linebot.herokuapp.com/static/LINE.m4a'
+                    duration=int(YouTube(url).length)))
             break
-    else:    
-        text = '說好的YouTube呢？'
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=text)
-    )
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='說好的YouTube呢？'))
 
 
 if __name__ == "__main__":
