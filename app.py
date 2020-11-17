@@ -46,13 +46,13 @@ def message_text(event):
         match = re.search('.*youtu.*', line)
         if match:
             print(YouTube(match.group(0)).streams.first().download(output_path='static',filename='YTDL'))
-            video = VideoFileClip('static/YTDL.mp4')
-            audio = video.audio
-            audio.write_audiofile('static/LINE.mp3')
-            video.close()
-            audio.close()
-            text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
-            #os.system('ffmpeg -i static/YTDL.mp4 -vn -c:a copy static/LINE.m4a')
+            #video = VideoFileClip('static/YTDL.mp4')
+            #audio = video.audio
+            #audio.write_audiofile('static/LINE.mp3')
+            #video.close()
+            #audio.close()
+            #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
+            os.system('ffmpeg -i static/YTDL.mp4 -vn -c:a copy static/LINE.m4a')
             break
     else:    
         text = '說好的YouTube呢？'
@@ -64,4 +64,3 @@ def message_text(event):
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
-    
