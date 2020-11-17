@@ -1,4 +1,5 @@
 gunicorn
 Flask
+line-bot-sdk
 pytube
 moviepy
