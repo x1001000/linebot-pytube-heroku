@@ -48,9 +48,15 @@ def message_text(event):
             url = match.group(0)
             video_id = extract.video_id(url)
             try:
-                print(YouTube(url).streams.get_by_resolution('720p').download(output_path='static',filename=video_id))
+                if YouTube(url).streams.get_by_resolution('720p'):
+                    print(YouTube(url).streams.get_by_resolution('720p').download(output_path='static',filename=video_id))
+                else:
+                    print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
             except:
-                print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='抱歉再試一次。。。'))
+                break
             #video = VideoFileClip('static/YTDL.mp4')
             #audio = video.audio
             #audio.write_audiofile('static/LINE.mp3')
@@ -68,11 +74,12 @@ def message_text(event):
                         original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{video_id}.m4a',
                         duration=YouTube(url).length * 1000),
                     TextSendMessage(text='敬請手刀下載。。。')])
-                break
             except:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='抱歉再試一次。。。'))
+                    TextSendMessage(text='奇怪再試一次。。。'))
+            finally:
+                break
     else:
         line_bot_api.reply_message(
             event.reply_token,
