@@ -53,7 +53,7 @@ def message_text(event):
                 else:
                     print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
             except Exception as e:
-                print(e)
+                print('ERROR:', e)
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='抱歉再試一次。。。'))
