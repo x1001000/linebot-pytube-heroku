@@ -4,7 +4,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, AudioSendMessage, VideoSendMessage
 from pytube import YouTube, extract
-from moviepy.editor import *
+#from moviepy.editor import *
 
 app = Flask(__name__)
 
@@ -69,10 +69,10 @@ def message_text(event):
                 line_bot_api.reply_message(
                     event.reply_token,[
                     VideoSendMessage(
-                        original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{video_id}.mp4',
+                        original_content_url=f'https://linebot-pytube.herokuapp.com/static/{video_id}.mp4',
                         preview_image_url=YouTube(url).thumbnail_url),
                     AudioSendMessage(
-                        original_content_url=f'https://youtube-dl-linebot.herokuapp.com/static/{video_id}.m4a',
+                        original_content_url=f'https://linebot-pytube.herokuapp.com/static/{video_id}.m4a',
                         duration=YouTube(url).length * 1000),
                     TextSendMessage(text='敬請手刀下載。。。')])
             except:
