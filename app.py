@@ -56,7 +56,7 @@ def message_text(event):
                 print('ERROR:', e)
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='抱歉再試一次。。。'))
+                    TextSendMessage(text='半小時再試試。。。'))
                 break
             #video = VideoFileClip('static/YTDL.mp4')
             #audio = video.audio
