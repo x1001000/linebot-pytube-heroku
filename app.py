@@ -53,7 +53,7 @@ def message_text(event):
                 else:
                     print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
             except Exception as e:
-                print('ERROR:', e)
+                print('EXCEPTION:', e)
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='半小時再試試。。。'))
@@ -74,8 +74,9 @@ def message_text(event):
                     AudioSendMessage(
                         original_content_url=f'https://linebot-pytube.herokuapp.com/static/{video_id}.m4a',
                         duration=YouTube(url).length * 1000),
-                    TextSendMessage(text='敬請手刀下載。。。')])
-            except:
+                    TextSendMessage(text='請先手刀下載。。。')])
+            except Exception as e:
+                print('EXCEPTION:', e)
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='奇怪再試一次。。。'))
