@@ -42,16 +42,20 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
-    for first in event.message.text.split():
-        match = re.search('.*youtu.*', first)
+    for split in event.message.text.split():
+        match = re.search('.*youtu.*', split)
         if match:
             url = match.group(0)
             video_id = extract.video_id(url)
+            yt = YouTube(url)
+            streams = yt.streams
+
+            # DOWNLOAD mp4
             try:
-                if YouTube(url).streams.get_by_resolution('720p'):
-                    print(YouTube(url).streams.get_by_resolution('720p').download(output_path='static',filename=video_id))
-                elif YouTube(url).streams.first():
-                    print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
+                if streams.get_highest_resolution():
+                    print(streams.get_highest_resolution().download(output_path='static',filename=video_id))
+                elif streams.first():
+                    print(streams.first().download(output_path='static',filename=video_id))
                 else:
                     line_bot_api.reply_message(
                         event.reply_token,
@@ -63,23 +67,31 @@ def message_text(event):
                     event.reply_token,
                     TextSendMessage(text='半小時再試試。。。'))
                 break
+            
+            # DOWNLOAD or EXTRACT m4a
             #video = VideoFileClip('static/YTDL.mp4')
             #audio = video.audio
             #audio.write_audiofile('static/LINE.mp3')
             #video.close()
             #audio.close()
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
-            os.system(f'ffmpeg -i static/{video_id}.mp4 -vn -c:a copy static/{video_id}.m4a')
+            if streams.get_audio_only():
+                print(streams.get_audio_only().download(output_path='static',filename=video_id+'_m4a'))
+                os.system(f'mv {video_id}_m4a.mp4 {video_id}.m4a')
+            else:
+                os.system(f'ffmpeg -i static/{video_id}.mp4 -vn -c:a copy static/{video_id}.m4a')
+            
+            # LINE mp4 and m4a
             try:
                 line_bot_api.reply_message(
                     event.reply_token,[
+                    TextSendMessage(text='敬請手刀下載⬇⬇'),
                     VideoSendMessage(
                         original_content_url=f'https://linebot-pytube.herokuapp.com/static/{video_id}.mp4',
-                        preview_image_url=YouTube(url).thumbnail_url),
+                        preview_image_url=yt.thumbnail_url),
                     AudioSendMessage(
                         original_content_url=f'https://linebot-pytube.herokuapp.com/static/{video_id}.m4a',
-                        duration=YouTube(url).length * 1000),
-                    TextSendMessage(text='請先手刀下載。。。')])
+                        duration=yt.length * 1000)])
             except Exception as e:
                 print('EXCEPTION:', e)
                 line_bot_api.reply_message(

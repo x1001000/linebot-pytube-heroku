@@ -2,4 +2,3 @@ gunicorn
 Flask
 line-bot-sdk
 git+https://github.com/nficano/pytube
-moviepy
