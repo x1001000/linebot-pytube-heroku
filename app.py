@@ -77,7 +77,7 @@ def message_text(event):
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
             if streams.get_audio_only():
                 print(streams.get_audio_only().download(output_path='static',filename=video_id+'_m4a'))
-                os.system(f'mv {video_id}_m4a.mp4 {video_id}.m4a')
+                os.system(f'mv static/{video_id}_m4a.mp4 static/{video_id}.m4a')
             else:
                 os.system(f'ffmpeg -i static/{video_id}.mp4 -vn -c:a copy static/{video_id}.m4a')
             
