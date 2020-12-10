@@ -2,8 +2,7 @@
 
 ## Add the Bot
 
-https://line.me/R/ti/p/@471vyrle
-![YouTu Bot](qrcode.png)
+[![YouTu Bot](qrcode.png)](https://line.me/R/ti/p/@471vyrle)
 
 ## References
 
