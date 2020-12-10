@@ -54,9 +54,8 @@ def message_text(event):
                     print(YouTube(url).streams.first().download(output_path='static',filename=video_id))
                 else:
                     line_bot_api.reply_message(
-                        event.reply_token,[
-                        TextSendMessage(text='我找不到載點。。。'),
-                        TextSendMessage(text='換個網址試試。。。')])
+                        event.reply_token,
+                        TextSendMessage(text='我找不到載點。。。'))
                     break
             except Exception as e:
                 print('EXCEPTION:', e)

@@ -1,5 +1,5 @@
 gunicorn
 Flask
 line-bot-sdk
-pytube==10.0.0
+git+https://github.com/nficano/pytube
 moviepy
