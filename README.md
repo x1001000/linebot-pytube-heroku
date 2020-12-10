@@ -1,8 +1,12 @@
-# A LINE Bot called YouTu Bot
+# A LINE Bot called You下ube
+
+> 安安你好我是You下ube  
+你給我YouTube的網址  
+我給你mp4和m4a的載點
 
 ## Add the Bot
 
-[![YouTu Bot](qrcode.png)](https://line.me/R/ti/p/@471vyrle)
+[![You下ube](qrcode.png)](https://line.me/R/ti/p/@471vyrle)
 
 ## References
 
