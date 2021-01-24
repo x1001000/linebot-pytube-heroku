@@ -46,7 +46,14 @@ def message_text(event):
         match = re.search('.*youtu.*', split)
         if match:
             url = match.group(0)
-            yt = YouTube(url)
+            try:
+                yt = YouTube(url)
+            except Exception as e:
+                print('EXCEPTION:', e)
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='此影片有地區限制，You下ube在美國無法下載，真是抱歉'))
+                break
             streams = yt.streams
             video_id = yt.video_id
             print(yt.title)
@@ -66,7 +73,7 @@ def message_text(event):
                 print('EXCEPTION:', e)
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='半小時再試試。。。'))
+                    TextSendMessage(text='我壞掉了抱歉。。。'))
                 break
             
             # DOWNLOAD or EXTRACT m4a
