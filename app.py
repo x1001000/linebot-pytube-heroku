@@ -48,15 +48,15 @@ def message_text(event):
             url = match.group(0)
             yt = YouTube(url)
             streams = yt.streams
-            # video_id = yt.video_id
-            title = yt.title
+            video_id = yt.video_id
+            print(yt.title)
 
             # DOWNLOAD mp4
             try:
                 if streams.get_highest_resolution():
-                    print(streams.get_highest_resolution().download(output_path='static'))#,filename=video_id))
+                    print(streams.get_highest_resolution().download(output_path='static',filename=video_id))
                 elif streams.first():
-                    print(streams.first().download(output_path='static'))#,filename=video_id))
+                    print(streams.first().download(output_path='static',filename=video_id))
                 else:
                     line_bot_api.reply_message(
                         event.reply_token,
@@ -77,10 +77,10 @@ def message_text(event):
             #audio.close()
             #text='https://youtube-dl-linebot.herokuapp.com/static/LINE.mp3'
             if streams.get_audio_only():
-                print(streams.get_audio_only().download(output_path='static',filename=title+'_m4a'))
-                os.system(f'mv static/{title}_m4a.mp4 static/{title}.m4a')
+                print(streams.get_audio_only().download(output_path='static',filename=video_id+'_m4a'))
+                os.system(f'mv static/{video_id}_m4a.mp4 static/{video_id}.m4a')
             else:
-                os.system(f'ffmpeg -i static/{title}.mp4 -vn -c:a copy static/{title}.m4a')
+                os.system(f'ffmpeg -i static/{video_id}.mp4 -vn -c:a copy static/{video_id}.m4a')
             
             # LINE mp4 and m4a
             try:
@@ -88,10 +88,10 @@ def message_text(event):
                     event.reply_token,[
                     TextSendMessage(text='敬請手刀下載⬇⬇'),
                     VideoSendMessage(
-                        original_content_url=f'https://linebot-pytube.herokuapp.com/static/{title}.mp4',
+                        original_content_url=f'https://linebot-pytube.herokuapp.com/static/{video_id}.mp4',
                         preview_image_url=yt.thumbnail_url),
                     AudioSendMessage(
-                        original_content_url=f'https://linebot-pytube.herokuapp.com/static/{title}.m4a',
+                        original_content_url=f'https://linebot-pytube.herokuapp.com/static/{video_id}.m4a',
                         duration=yt.length * 1000)])
             except Exception as e:
                 print('EXCEPTION:', e)
