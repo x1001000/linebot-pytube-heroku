@@ -52,7 +52,7 @@ def message_text(event):
                 print('EXCEPTION:', e)
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='此影片有地區限制，You下ube在美國無法下載，真是抱歉'))
+                    TextSendMessage(text='You下ube被YouTube已讀。。。\n請換個網址再讓我試試。。。'))
                 break
             streams = yt.streams
             video_id = yt.video_id
@@ -67,13 +67,13 @@ def message_text(event):
                 else:
                     line_bot_api.reply_message(
                         event.reply_token,
-                        TextSendMessage(text='我找不到載點。。。'))
+                        TextSendMessage(text='抱歉我找不到載點。。。'))
                     break
             except Exception as e:
                 print('EXCEPTION:', e)
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='我壞掉了抱歉。。。'))
+                    TextSendMessage(text='抱歉我似乎壞掉了。。。'))
                 break
             
             # DOWNLOAD or EXTRACT m4a
