@@ -1,4 +1,4 @@
 gunicorn
 Flask
 line-bot-sdk
-git+https://github.com/nficano/pytube
+git+https://github.com/brilliant-ember/pytube@a3c96b9
